@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Rekomendacje{% endblock %}
+
+{% block content %}
+<style>
+  .movie-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .movie {
+    width: 300px;
+    height: 450px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.1s ease;
+    transition: transform 0.2s ease;
+  }
+
+  .movie:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(0.9);
+  }
+
+  .movie img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+  }
+
+  .movie h2 {
+    font-size: 1.5rem;
+    margin: 10px;
+    text-align: center;
+  }
+
+  a {
+    color: inherit;
+  }
+</style>
+{% csrf_token %}
+<h2>MSE: {{MSE}}</h2>
+<div class="movie-container">
+
+  {% for movie2 in movies %}
+  {% for movie in movie2 %}
+  <div class="movie">
+    <a href="{%url 'detail' movie.movie_id%}" style="text-decoration:none">
+      <img src="{% url 'poster' movie.movie_id %}" alt="Movie Poster">
+      <h2>{{movie.title}}</h2>
+    </a>
+  </div>
+  {% endfor %}
+  {% endfor %}
+</div>
+{% endblock %}

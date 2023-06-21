@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+  .user-buttons {
+    font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #ddd;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+    .center {
+      text-align: center;
+    }
+    .content-container{
+      margin: auto;
+        margin-top: 50px;
+        width: 50%;
+        border: 3px solid #336699;
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+{% csrf_token %}
+<div class="center">
+{% if user.is_authenticated %}
+  <p>Zalogowano: {{ user.username }}</p>
+  <a href="{% url 'logout' %}" class="user-buttons">Wyloguj</a>
+{% else %}
+  <p>Zaloguj się.</p>
+  <a href="{% url 'login' %}" class="user-buttons">Zaloguj się</a>
+  <p>Nie masz jeszcze konta? Zarejestruj się</p>
+  <a href="{% url 'signup' %}" class="user-buttons">Zarejestruj się</a>
+{% endif %}
+<div class="content-container">
+<p>Aby zobaczyć dostępne filmy kliknij przycisk lista filmów.</p>
+<p>Aby zobaczyć rekomendacje kliknij na przycisk rekomendacje.</p>
+<p>Rekomendacje wymagają wcześniejszego wygenerowania</p>
+<p>Ocenione filmy możesz zobaczyć w panelu konta</p>
+</div>
+</div>
+{% endblock %}

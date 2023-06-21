@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %} {{movie.title}} - szczegóły{% endblock %}
+
+{% block content %}
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .menu-container {
+      background-color: #336699;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .menu-item {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #ddd;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-item:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .movie-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .movie-details h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    .movie-details h3 {
+      margin: 0;
+      color: #666;
+      font-weight: normal;
+    }
+
+    .movie-details .poster {
+      width: 300px;
+      height: 450px;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      background-color: #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .movie-details .poster img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .movie-details .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-width: 700px;
+    }
+
+    .rating {
+      display: inline-block;
+    }
+
+    .rating input[type="radio"] {
+      display: none;
+    }
+
+    .rating label {
+      font-size: 24px;
+      color: gray;
+      cursor: pointer;
+    }
+
+    .rating label:hover,
+    .rating label:hover~label,
+    .rating input[type="radio"]:checked~label {
+      color: orange;
+    }
+  </style>
+  <div class="movie-details">
+    <div class="poster">
+      <img src="{% url 'poster' movie.movie_id %}" alt="{{ movie.title }} Poster">
+    </div>
+    <div class="info">
+      <h1>{{ movie.title }}</h1>
+      <h3>{{ movie.type }}, {{ movie.start_year }}</h3>
+      <h3>{{ movie.genres }}</h3>
+      <div class="info-row">
+        <span class="info-label">Runtime:</span>
+        <span class="info-value">{{ movie.runtime }} minutes</span>
+      </div>
+      <p><a href="https://www.imdb.com/title/{{ movie.movie_id }}/">IMDB</a></p>
+      <form action="{% url 'rating' movie.movie_id %}" method="post">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+        {% if rating == 0 %}
+        <div class="rating">
+          <input type="radio" id="star10" name="rating" value="10", required="required">
+          <label for="star10" title="10 stars">&#9733;</label>
+          <input type="radio" id="star9" name="rating" value="9">
+          <label for="star9" title="9 stars">&#9733;</label>
+          <input type="radio" id="star8" name="rating" value="8">
+          <label for="star8" title="8 stars">&#9733;</label>
+          <input type="radio" id="star7" name="rating" value="7">
+          <label for="star7" title="7 stars">&#9733;</label>
+          <input type="radio" id="star6" name="rating" value="6">
+          <label for="star6" title="6 stars">&#9733;</label>
+          <input type="radio" id="star5" name="rating" value="5">
+          <label for="star5" title="5 stars">&#9733;</label>
+          <input type="radio" id="star4" name="rating" value="4">
+          <label for="star4" title="4 stars">&#9733;</label>
+          <input type="radio" id="star3" name="rating" value="3">
+          <label for="star3" title="3 stars">&#9733;</label>
+          <input type="radio" id="star2" name="rating" value="2">
+          <label for="star2" title="2 stars">&#9733;</label>
+          <input type="radio" id="star1" name="rating" value="1">
+          <label for="star1" title="1 star">&#9733;</label>
+        </div>
+        {% endif %}
+        {% if rating != 0 %}
+        <div class = rating>
+        {% for i in '0123456789' %}
+          {% if rating == forloop.revcounter %}
+          <input type="radio" id="star{{ forloop.revcounter }}" name="rating" value="{{ forloop.revcounter}}" checked = "checked">
+          <label for="star{{forloop.revcounter}}" title="{{forloop.revcounter}} star">&#9733;</label>
+          {% else %}
+          <input type="radio" id="star{{ forloop.revcounter }}" name="rating" value="{{ forloop.revcounter}}">
+          <label for="star{{forloop.revcounter}}" title="{{forloop.revcounter}} star">&#9733;</label>
+          {% endif %}
+        {% endfor %}
+        </div>
+        {% endif %}
+        <input type="submit" value="Oceń">
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

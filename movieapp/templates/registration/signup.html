@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<style>
+    .registration-form {
+        margin: auto;
+        margin-top: 50px;
+        width: 50%;
+        border: 3px solid #336699;
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+<div class="registration-form">
+    <h2>Zarejestruj się</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="username">
+            <label>Nazwa użytkownika</label>
+            <p>{{form.username}}</p>
+        </div>
+        <div class="email">
+            <label>Adres E-mail</label>
+            <p>{{form.email}}</p>
+        </div>
+        <div class="password1">
+            <p>Hasło musi być odpowiednio silne</p>
+            <label>Hasło</label>
+            <p>{{form.password1}}</p>
+        </div>
+        <div class="password2">
+            <label>Potwierdź hasło</label>
+            <p>{{form.password2}}</p>
+        </div>
+        <button type="submit">Zarejestruj się</button>
+    </form>
+</div>
+{% endblock %}

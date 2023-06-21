@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel rekomendacji{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+  .not.logged {
+        margin: auto;
+        margin-top: 50px;
+        width: 50%;
+        border: 3px solid #336699;
+        padding: 10px;
+        text-align: center;
+    }
+  .recommendation-button {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ddd;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .recommendation-button:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .movie-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .movie {
+    width: 300px;
+    height: 450px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.1s ease;
+    transition: transform 0.2s ease;
+  }
+
+  .movie:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(0.9);
+  }
+
+  .movie img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+  }
+
+  .movie h2 {
+    font-size: 1.5rem;
+    margin: 10px;
+    text-align: center;
+  }
+
+  a {
+    color: inherit;
+  }
+</style>
+<div class="container">
+  <h2>Rekomendacje SVD</h2>
+  <p><a href="{% url 'SVD' %}" class="recommendation-button">Wygeneru SVD</a></p>
+  <div class="recommendation-container">
+    {% if svd == '' %}
+    <h3>Nie wygenerowano jeszcze rekomendacji</h3>
+    {% endif %}
+    <div class="movie-container">
+      {% for movie in svd %}
+      <div class="movie">
+        <a href="../{{movie.movie_id}}" style="text-decoration:none">
+          <img src="{% url 'poster' movie.movie_id %}" alt="Movie Poster">
+          <h2>{{movie.title}}</h2>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h2>Rekomendacje RSVD</h2>
+  <p><a href="{% url 'RSVD' %}" class="recommendation-button">Wygeneruj RSVD</a></p>
+  <div class='recommendation-container'>
+    {% if rsvd == '' %}
+    <h3>Nie wygenerowano jeszcze rekomendacji</h3>
+    {% endif %}
+    <div class="movie-container">
+      {% for movie in rsvd %}
+      <div class="movie">
+        <a href="../{{movie.movie_id}}" style="text-decoration:none">
+          <img src="{% url 'poster' movie.movie_id %}" alt="Movie Poster">
+          <h2>{{movie.title}}</h2>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h2>Rekomendacje NoSVD</h2>
+  <div class="recommendation-container">
+    <p><a href="{% url 'NoSVD' %}" class="recommendation-button">Wygeneruj NoSVD</a></p>
+    {% if nosvd == '' %}
+    <h3>Nie wygenerowano jeszcze rekomendacji</h3>
+    {% endif %}
+    <div class="movie-container">
+      {% for movie in nosvd %}
+      <div class="movie">
+        <a href="../{{movie.movie_id}}" style="text-decoration:none">
+          <img src="{% url 'poster' movie.movie_id %}" alt="Movie Poster">
+          <h2>{{movie.title}}</h2>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="not-logged">
+<p>Ta strona wymaga zalogowania</p>
+<a href="{% url 'login' %}">Zaloguj się</a>
+</div>
+{% endif %}
+{% endblock %}

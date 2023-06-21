@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista Filmów{% endblock %}
+
+{% block content %}
+  <style>
+    .movie-container {
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+    .movie {
+        width: 300px;
+        height: 450px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        position: relative;
+        transition: background-color 0.1s ease;
+        transition: transform 0.2s ease;
+    }
+    .movie:hover {
+        background-color: #333;
+        color: #fff;
+        transform: scale(0.9);
+    }
+    .movie img {
+        width: 100%;
+        height: 80%;
+        object-fit: cover;
+    }
+    .movie h2 {
+        font-size: 1.5rem;
+        margin: 10px;
+        text-align: center;
+    }
+    a {
+        color: inherit;
+    }
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        font-size: 16px;
+    }
+
+    .pagination a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 0 5px;
+    }
+
+    .pagination form {
+        margin: 0 10px;
+    }
+
+    .pagination input[type="number"] {
+        width: 60px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .pagination input[type="submit"] {
+        width: 60px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .pagination p {
+        margin: 0;
+        font-size: 16px;
+    }
+  </style>
+
+
+    <div class="movie-container">
+
+    {% for movie in page %}
+    <div class="movie">
+        <a href = "../{{movie.movie_id}}" style="text-decoration:none">
+        <img src="{% url 'poster' movie.movie_id %}" alt="Movie Poster">
+        <h2>{{movie.title}}</h2>
+        </a>
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">previous</a>
+        {% endif %}
+            <form method="get">
+                <input type="number" name="page" value="{{ page.number }}" min="1" max="{{ page.paginator.num_pages }}">
+                <input type="submit" value="Go">
+            </form>
+            <p>Page {{ page.number }} of {{ page.paginator.num_pages }}</p>
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+        {% endif %}
+    </div>
+{% endblock %}

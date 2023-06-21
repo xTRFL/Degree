@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+  .login-form {
+  margin: auto;
+  margin-top: 50px;
+  width: 50%;
+  border: 3px solid #336699;
+  padding: 10px;
+}
+</style>
+<div class="login-form">
+<h2>Zaloguj się</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Zaloguj</button>
+</form>
+</div>
+{% endblock %}
